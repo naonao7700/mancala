@@ -21,10 +21,28 @@
 //	return KeyID::NONE;
 //}
 
+Pocket* Mancala::GetGool(int playerID)
+{
+	if (playerID == 0) return &pockets[0];
+	return &pockets[13];
+}
+
+Pocket* Mancala::GetPockets(int playerID)
+{
+	if (playerID == 0) return &pockets[1];
+	return &pockets[7];
+}
+
+Pocket* Mancala::GetPocket(int pocketID)
+{
+	return &pockets[pocketID];
+}
+
 Mancala::Mancala()
 {
+	cursor = 0;
+	turn = Turn::Player;
 	result = Result::None;
-	turn = 0;
 
 	for (int i = 0; i < 14; ++i)
 	{

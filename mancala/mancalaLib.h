@@ -14,7 +14,6 @@ public:
 
 	//石を追加する
 	void AddStoneNum(int num);
-
 };
 
 //入力したキーの種類
@@ -44,16 +43,21 @@ enum class Turn
 //マンカラクラス
 class Mancala
 {
+private:
+	Pocket pockets[14];
 public:
 	int cursor;	//カーソル位置
 	Turn turn;	//現在のターン
 	Result result;	//勝敗
 
-	//ポケット
-	Pocket pockets[14];
+	//ゴールポケットを取得する
+	Pocket* GetGool(int playerID);
 
-	//KeyID GetKeyDown();
-	
+	//ゴール以外のポケットを取得する(playerIDで陣営を指定する)
+	Pocket* GetPockets(int playerID);
+
+	//指定したポケットを取得する
+	Pocket* GetPocket(int pocketID);
 
 	//コンストラクタ
 	Mancala();
