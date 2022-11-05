@@ -35,15 +35,25 @@ enum class Result
 	Draw,	//引き分け
 };
 
+enum class Turn
+{
+	Player,
+	Enemy,
+};
+
 //マンカラクラス
 class Mancala
 {
 public:
-	Result result;
-	KeyID GetKeyDown();
-	
+	int cursor;	//カーソル位置
+	Turn turn;	//現在のターン
+	Result result;	//勝敗
+
+	//ポケット
 	Pocket pockets[14];
-	int turn;
+
+	//KeyID GetKeyDown();
+	
 
 	//コンストラクタ
 	Mancala();
