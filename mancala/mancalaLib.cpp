@@ -1,7 +1,7 @@
 #include "mancalaLib.h"
 #include <conio.h>
 #include <stdio.h>
-#include <windows.h> 
+#include <windows.h>
 
 #define ANY_ARROW	(224)
 #define KEY_LEFT	(75)
@@ -21,38 +21,75 @@
 //	return KeyID::NONE;
 //}
 
-Pocket* Mancala::GetGool(int playerID)
+//ゴールポケットを取得する
+const Pocket& Mancala::GetGool(int playerID)
 {
-	if (playerID == 0) return &pockets[0];
-	return &pockets[13];
+	if (playerID == 0) return pockets[0];
+	return pockets[13];
 }
 
-Pocket* Mancala::GetPockets(int playerID)
+//陣地のポケットを取得する
+std::vector<Pocket> Mancala::GetPockets(int playerID)
 {
-	if (playerID == 0) return &pockets[1];
-	return &pockets[7];
+	std::vector<Pocket> list;
+	if (playerID == 0)
+	{
+		for (int i = 0; i < 6; ++i)
+		{
+			list.push_back(pockets[1 + i]);
+		}
+	}
+	else
+	{
+		for (int i = 0; i < 6; ++i)
+		{\
+			list.push_back(pockets[7 + i]);
+		}
+	}
+
+	return list;
+	//if (playerID == 0) return pockets[1];
+	//return pockets[7];
 }
 
-Pocket* Mancala::GetPocket(int pocketID)
+//任意のポケットを取得する
+const Pocket& Mancala::GetPocket(int pocketID)
 {
-	return &pockets[pocketID];
+	return pockets[pocketID];
 }
 
 Mancala::Mancala()
 {
+	gameState = GameState::Game_Input;
 	cursor = 0;
-	turn = Turn::Player;
+	turnPlayer = PlayerID::Left;
 	result = Result::None;
 
 	for (int i = 0; i < 14; ++i)
 	{
-		pockets[i] = *new Pocket(5);
+		pockets.push_back(Pocket(5));
 	}
+	handCursor = 0;
+	handNum = 0;
 }
 
 Mancala::~Mancala()
 {
-	delete[] pockets;
+	pockets.clear();
+}
+
+bool Mancala::CanSteal()
+{
+	return false;
+}
+
+bool Mancala::IsJust()
+{
+	return false;
+}
+
+void Mancala::Update()
+{
 }
 
 Pocket::Pocket(int stoneNum)
@@ -64,7 +101,7 @@ Pocket::~Pocket()
 {
 }
 
-int Pocket::GetStoneNum()
+int Pocket::GetStoneNum() const
 {
 	return stone;
 }

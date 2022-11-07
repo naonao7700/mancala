@@ -1,4 +1,25 @@
 #pragma once
+#include <vector>
+
+//ゲームの状態
+enum class GameState
+{
+	Title,
+	Rule,
+	Game_Input,
+	Game_Move,
+	Game_Just,
+	Game_Steel,
+	Game_Finish,
+	Result,
+};
+
+//プレイヤーの種類
+enum class PlayerID
+{
+	Left,
+	Right,
+};
 
 //ポケットクラス
 class Pocket
@@ -10,7 +31,7 @@ public:
 	~Pocket();
 
 	//入っている石の数を取得する
-	int GetStoneNum();
+	int GetStoneNum() const;
 
 	//石を追加する
 	void AddStoneNum(int num);
@@ -34,35 +55,46 @@ enum class Result
 	Draw,	//引き分け
 };
 
-enum class Turn
-{
-	Player,
-	Enemy,
-};
-
 //マンカラクラス
 class Mancala
 {
 private:
-	Pocket pockets[14];
+	std::vector<Pocket> pockets;//全てのポケット
+	//00は上側のゴール
+	//01～06は上側のポケット
+	//07～12は下側のポケット
+	//13は下側のゴール
+
+	int handCursor;	//石を落とす位置
+	int handNum;	//つかんでいる石の数
 public:
+	GameState gameState;	//ゲームの状態
 	int cursor;	//カーソル位置
-	Turn turn;	//現在のターン
+	PlayerID turnPlayer;	//現在ターンのプレイヤー
 	Result result;	//勝敗
 
 	//ゴールポケットを取得する
-	Pocket* GetGool(int playerID);
+	const Pocket& GetGool(int playerID);
 
 	//ゴール以外のポケットを取得する(playerIDで陣営を指定する)
-	Pocket* GetPockets(int playerID);
+	std::vector<Pocket> GetPockets(int playerID);
 
 	//指定したポケットを取得する
-	Pocket* GetPocket(int pocketID);
+	const Pocket& GetPocket(int pocketID);
 
 	//コンストラクタ
 	Mancala();
 
 	//デストラクタ
 	~Mancala();
+
+	//横取り可能か取得する
+	bool CanSteal();
+
+	//ぴったりゴールか取得する
+	bool IsJust();
+
+	//ボードの変化を反映させる
+	void Update();
 	
 };
