@@ -140,6 +140,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="mancala.cpp" />
+    <ClCompile Include="mancalaLib.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="mancalaLib.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
