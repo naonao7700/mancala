@@ -1,17 +1,54 @@
 ﻿#include <iostream>
 #include "mancalaLib.h"
+#include <stdlib.h>
+#include <conio.h>
+
+
+enum class KeyCode
+{
+    NONE,
+    UP,
+    DOWN,
+    ENTER,
+};
 
 void Clear();
 void drawAll(Mancala mancala);
+KeyCode getKeyCode();
+
 
 int main()
 {
-    int a = 0;
     Mancala mancala{};
-    drawAll(mancala);
 
-    std::cin >> a;
-    std::cout << a << std::endl;
+    while (true)
+    {
+        drawAll(mancala);
+        switch (mancala.gameState)
+        {
+        case GameState::Game_Input:
+            switch (getKeyCode())
+            {
+            case KeyCode::UP:
+                mancala.cursor--;
+                break;
+            case KeyCode::DOWN:
+                mancala.cursor++;
+                break;
+            case KeyCode::ENTER:
+                mancala.gameState = GameState::Result;
+                break;
+            default:
+                break;
+            }
+
+            break;
+        default:
+            break;
+        }
+        if (mancala.gameState == GameState::Result)   break;
+    }
+
     return 0;
 }
 
@@ -53,6 +90,22 @@ void drawAll(Mancala mancala)
     std::cout << std::endl;
     std::cout << "  左側：" << mancala.GetGool(0).GetStoneNum() << std::endl;
     std::cout << std::endl;
+}
+
+KeyCode getKeyCode()
+{
+    int key = 0;
+    while (key == 0)
+    {
+        while (_kbhit())
+        {
+            key = _getch(); //キー入力コードを取得
+        }
+    }
+    if (key == 13)   return KeyCode::ENTER;
+    if (key == 72)   return KeyCode::UP;
+    if (key == 80)   return KeyCode::DOWN;
+    return KeyCode::NONE;
 }
 
 
