@@ -9,6 +9,13 @@ int Mancala::GetCursorPos()
 	return pos;
 }
 
+int Mancala::GetCursorPos(PlayerID id, int index)
+{
+	int pos = 1 + index;
+	if (id == PlayerID::Right) pos += 6;
+	return pos;
+}
+
 int Mancala::GetNextPos()
 {
 	switch (handCursor)
@@ -39,23 +46,58 @@ void Mancala::MoveUpdate()
 
 	if (handNum <= 0)
 	{
-		ChangeTurn();
+		if (IsFinish())
+		{
+			gameState = GameState::Game_Finish;
+		}
+		else if (IsJust())
+		{
+			gameState == GameState::Game_Just;
+		}
+		else if (IsSteel())
+		{
+			gameState == GameState::Game_Steel;
+		}
+		else
+		{
+			ChangeTurn();
+			gameState = GameState::Game_Input;
+		}
 
-		gameState = GameState::Game_Input;
 	}
 
 }
 
+//ぴったりゴールの処理
 void Mancala::JustUpdate()
 {
+	gameState = GameState::Game_Input;
 }
 
+//横取りの処理
 void Mancala::SteelUpdate()
 {
+	pockets[handCursor].ResetStone();
+
+	gameState = GameState::Game_Input;
+	ChangeTurn();
 }
 
+//終了時の処理
 void Mancala::FinishUpdate()
 {
+	for (int i = 0; i < 6; ++i)
+	{
+		int Lindex = 1 + i;
+		int Rindex = 7 + i;
+
+		pockets[0].AddStoneNum(pockets[Lindex].GetStoneNum());
+		pockets[Lindex].ResetStone();
+
+		pockets[13].AddStoneNum(pockets[Rindex].GetStoneNum());
+		pockets[Rindex].ResetStone();
+
+	}
 }
 
 void Mancala::ChangeTurn()
@@ -65,6 +107,12 @@ void Mancala::ChangeTurn()
 	{
 		turnPlayer = PlayerID::Right;
 	}
+}
+
+int Mancala::GetSteelPos(int pos)
+{
+	if (pos < 7) return pos + 6;
+	else return pos - 6;
 }
 
 //ゴールポケットを取得する
@@ -113,8 +161,8 @@ Mancala::Mancala()
 	{
 		pockets.push_back(Pocket(5));
 	}
-	pockets[0].AddStoneNum(-5);
-	pockets[13].AddStoneNum(-5);
+	pockets[0].ResetStone();
+	pockets[13].ResetStone();
 	handCursor = 0;
 	handNum = 0;
 }
@@ -131,6 +179,35 @@ bool Mancala::CanSteal()
 
 bool Mancala::IsJust()
 {
+	return false;
+}
+
+bool Mancala::IsFinish()
+{
+	int cnt = 0;
+	for (int i = 0; i < 6; ++i)
+	{
+		int index = 1 + i;
+		cnt += pockets[index].GetStoneNum();
+	}
+	if (cnt <= 0) return true;
+
+	cnt = 0;
+	for (int i = 0; i < 6; ++i)
+	{
+		int index = 7 + i;
+		cnt += pockets[index].GetStoneNum();
+	}
+	if (cnt <= 0) return true;
+	return false;
+}
+
+bool Mancala::IsSteel()
+{
+	if (handCursor == 0 || handCursor == 13) return false;	//ゴールは横取りしない
+
+	int pos = GetSteelPos(handCursor);
+	if (pockets[pos].GetStoneNum() > 0 && pockets[handCursor].GetStoneNum() == 1) return true;
 	return false;
 }
 
@@ -175,7 +252,7 @@ void Mancala::OnEnterKey()
 	handNum = pocket.GetStoneNum();
 
 	//ポケットを空にする
-	pockets[handCursor].AddStoneNum(-handNum);
+	pockets[handCursor].ResetStone();
 
 	gameState = GameState::Game_Move;
 
@@ -185,13 +262,71 @@ std::string Mancala::GetCursorText(PlayerID id, int index)
 {
 	auto str = ">";
 	if (id == PlayerID::Right) str = "<";
-	if (cursor != index) str = " ";
+
+	if (gameState == GameState::Game_Move)
+	{
+		int pos = GetCursorPos(id, index);
+		if (pos != handCursor)
+		{
+			str = " ";
+		}
+	}
+	else
+	{
+		if (cursor != index) str = " ";
+		if (turnPlayer != id) str = " ";
+	}
 	return str;
 }
 
 std::string Mancala::GetGoalText(PlayerID id)
 {
-	return " ";
+	auto str = " ";
+	if (gameState == GameState::Game_Move)
+	{
+		if (id == PlayerID::Left && handCursor == 0)
+		{
+			str = "<";
+		}
+		else if (id == PlayerID::Right && handCursor == 13)
+		{
+			str = "<";
+		}
+	}
+	return str;
+}
+
+std::string Mancala::GetGameText()
+{
+	if (gameState == GameState::Game_Input)
+	{
+		if (turnPlayer == PlayerID::Left)
+		{
+			return "左側のターン";
+		}
+		else
+		{
+			return "右側のターン";
+		}
+	}
+	else if (gameState == GameState::Game_Move)
+	{
+		return "移動中";
+	}
+	else if (gameState == GameState::Game_Just)
+	{
+		return "ぴったりゴール！";
+	}
+	else if (gameState == GameState::Game_Steel)
+	{
+		return "横取り！";
+	}
+	else if (gameState == GameState::Game_Finish)
+	{
+		return "ゲーム終了！";
+	}
+
+	return "";
 }
 
 Pocket::Pocket(int stoneNum)
@@ -211,4 +346,9 @@ int Pocket::GetStoneNum() const
 void Pocket::AddStoneNum(int num)
 {
 	stone += num;
+}
+
+void Pocket::ResetStone()
+{
+	stone = 0;
 }
