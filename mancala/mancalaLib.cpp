@@ -1,5 +1,4 @@
 #include "mancalaLib.h"
-#include <conio.h>
 #include <stdio.h>
 #include <windows.h>
 
@@ -90,6 +89,30 @@ bool Mancala::IsJust()
 
 void Mancala::Update()
 {
+}
+
+void Mancala::OnUpKey()
+{
+	cursor--;
+	if (cursor < 0) cursor = 5;
+}
+
+void Mancala::OnDownKey()
+{
+	cursor++;
+	if (cursor >= 6) cursor = 0;
+}
+
+void Mancala::OnEnterKey()
+{
+	if (turnPlayer == PlayerID::Left)
+	{
+		turnPlayer = PlayerID::Right;
+	}
+	else
+	{
+		turnPlayer = PlayerID::Left;
+	}
 }
 
 Pocket::Pocket(int stoneNum)

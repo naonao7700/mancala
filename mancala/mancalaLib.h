@@ -96,5 +96,8 @@ public:
 
 	//ボードの変化を反映させる
 	void Update();
-	
+
+	void OnUpKey();	//↑キーを押したとき
+	void OnDownKey();	//↓キーを押したとき
+	void OnEnterKey();	//Enterキーを押したとき
 };
