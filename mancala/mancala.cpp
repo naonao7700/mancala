@@ -16,6 +16,9 @@ void drawTitle();
 void drawRule();
 void drawGame(Mancala mancala);
 void drawResult(Mancala mancala);
+void drawResult_leftWin();
+void drawResult_rightWin();
+void drawResult_drawGame();
 KeyCode getKeyCode();
 
 
@@ -42,26 +45,33 @@ int main()
             switch (getKeyCode())
             {
             case KeyCode::UP:
-                mancala.cursor--;
+                mancala.OnUpKey();
                 break;
             case KeyCode::DOWN:
-                mancala.cursor++;
+                mancala.OnDownKey();
                 break;
             case KeyCode::ENTER:
-                mancala.gameState = GameState::Result;
+                mancala.OnEnterKey();
                 break;
             default:
                 break;
             }
-
             break;
         case GameState::Game_Move:
+            mancala.Update();
+            drawGame(mancala);
             break;
         case GameState::Game_Just:
+            mancala.Update();
+            drawGame(mancala);
             break;
         case GameState::Game_Steel:
+            mancala.Update();
+            drawGame(mancala);
             break;
         case GameState::Game_Finish:
+            mancala.Update();
+            drawGame(mancala);
             break;
         case GameState::Result:
             break;
@@ -170,6 +180,44 @@ void drawGame(Mancala mancala)
 }
 
 void drawResult(Mancala mancala)
+{
+    if (mancala.GetGool(0).GetStoneNum() > mancala.GetGool(1).GetStoneNum())
+    {
+        drawResult_leftWin();
+    }
+    else
+    {
+        drawResult_rightWin();
+    }
+
+    if (mancala.GetGool(0).GetStoneNum() == mancala.GetGool(1).GetStoneNum())
+    {
+        drawResult_drawGame();
+    }
+}
+
+void drawResult_leftWin()
+{
+    clearText();
+
+    std::cout << std::endl;
+    std::cout << std::endl;
+    std::cout << "　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　■　　　　　　" << std::endl;
+    std::cout << "　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　■　　　　　　" << std::endl;
+    std::cout << "　　　■■■■■　　■■■　　■■■　　■■■　　■■■　　■　　■■■　" << std::endl;
+    std::cout << "　　　■　■　■　　■　■　　■　■　　■　　　　■　■　　■　　■　■　" << std::endl;
+    std::cout << "　　　■　■　■　　■■■■　■　■　　■■■　　■■■■　■　　■■■■" << std::endl;
+    std::cout << std::endl;
+    std::cout << std::endl;
+    std::cout << "　　　　　　　　　　　　　　　　PRESS ENTER KEY" << std::endl;
+}
+
+void drawResult_rightWin()
+{
+
+}
+
+void drawResult_drawGame()
 {
 
 }
