@@ -70,6 +70,7 @@ private:
 	int handNum;	//つかんでいる石の数
 
 	int GetCursorPos();	//カーソルの位置を取得する
+	int GetCursorPos(PlayerID id, int index);	//引数からカーソルの位置を取得する
 	int GetNextPos();	//次に石を落とす場所を取得する
 
 	void MoveUpdate();

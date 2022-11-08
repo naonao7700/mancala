@@ -9,6 +9,13 @@ int Mancala::GetCursorPos()
 	return pos;
 }
 
+int Mancala::GetCursorPos(PlayerID id, int index)
+{
+	int pos = 1 + index;
+	if (id == PlayerID::Right) pos += 6;
+	return pos;
+}
+
 int Mancala::GetNextPos()
 {
 	switch (handCursor)
@@ -186,6 +193,15 @@ std::string Mancala::GetCursorText(PlayerID id, int index)
 	auto str = ">";
 	if (id == PlayerID::Right) str = "<";
 	if (cursor != index) str = " ";
+
+	if (gameState == GameState::Game_Move)
+	{
+		int pos = GetCursorPos(id, index);
+		if (pos != handCursor)
+		{
+			str = " ";
+		}
+	}
 	return str;
 }
 
