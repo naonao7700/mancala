@@ -67,6 +67,17 @@ private:
 
 	int handCursor;	//石を落とす位置
 	int handNum;	//つかんでいる石の数
+
+	int GetCursorPos();	//カーソルの位置を取得する
+	int GetNextPos();	//次に石を落とす場所を取得する
+
+	void MoveUpdate();
+	void JustUpdate();
+	void SteelUpdate();
+	void FinishUpdate();
+
+	void ChangeTurn();	//相手のターンへ
+
 public:
 	GameState gameState;	//ゲームの状態
 	int cursor;	//カーソル位置
@@ -74,13 +85,13 @@ public:
 	Result result;	//勝敗
 
 	//ゴールポケットを取得する
-	const Pocket& GetGool(int playerID);
+	const Pocket& GetGool( PlayerID playerID );
 
 	//ゴール以外のポケットを取得する(playerIDで陣営を指定する)
-	std::vector<Pocket> GetPockets(int playerID);
+	std::vector<Pocket> GetPockets( PlayerID playerID );
 
 	//指定したポケットを取得する
-	const Pocket& GetPocket(int pocketID);
+	const Pocket& GetPocket( int pocketID );
 
 	//コンストラクタ
 	Mancala();
