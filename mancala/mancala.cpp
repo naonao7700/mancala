@@ -197,13 +197,13 @@ void drawResult_leftWin()
 
     std::cout << std::endl;
     std::cout << std::endl;
-    std::cout << "　　　　　　　　　　　　　■　　　　　　　　　　　　■　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　■　■" << std::endl;
-    std::cout << "　　　　　　　■　　　　　■　　　　■　　　　　　　■　　　　　　　　　　　■　　　　　　　　　　　　　■　　　　　■　■" << std::endl;
-    std::cout << "　　　■■■　　　■■■　■■■　■■■　　■■■　■　■■■　■　　■　■　■　■■■　　■　■　■　　　■■■　■　■" << std::endl;
-    std::cout << "　　　■　■　■　■　■　■　■　　■　　　■　■　■　■　■　　■■　　■■■　■　■　　■　■　■　■　■　■　　　　" << std::endl;
+    std::cout << "　　　　　　　　　　　　　■　　　　　　　　　　　　■　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　■　■　　　" << std::endl;
+    std::cout << "　　　　　　　■　　　　　■　　　　■　　　　　　　■　　　　　　　　　　　■　　　　　　　　　　　　　■　　　　　■　■　　　" << std::endl;
+    std::cout << "　　　■■■　　　■■■　■■■　■■■　　■■■　■　■■■　■　　■　■　■　■■■　　■　■　■　　　■■■　■　■　　　" << std::endl;
+    std::cout << "　　　■　■　■　■　■　■　■　　■　　　■　■　■　■　■　　■■　　■■■　■　■　　■　■　■　■　■　■　　　　　　　" << std::endl;
     std::cout << "　　　■　　　■　■■■　■　■　　■■　　■■■　■　■■■■　■　　　■　　　■　　　　　■　■　　■　■　■　■　■　　　" << std::endl;
-    std::cout << "　　　　　　　　　　　■　　　　　　　　　　■　　　　　　　　　■　　　　　■　　　　　　　　　　　　　　　　　　　　　" << std::endl;
-    std::cout << "　　　　　　　　　■■■　　　　　　　　　　■　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　" << std::endl;
+    std::cout << "　　　　　　　　　　　■　　　　　　　　　　■　　　　　　　　　■　　　　　■　　　　　　　　　　　　　　　　　　　　　　　　　" << std::endl;
+    std::cout << "　　　　　　　　　■■■　　　　　　　　　　■　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　" << std::endl;
     std::cout << std::endl;
     std::cout << std::endl;
     std::cout << "　　　　　　　　　　　　　　　　　　　　　　　　　　　　　PRESS ENTER KEY" << std::endl;
@@ -215,13 +215,13 @@ void drawResult_rightWin()
 
     std::cout << std::endl;
     std::cout << std::endl;
-    std::cout << "　　　■　　　　　　■■　　　　　　　　　　■　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　■　■" << std::endl;
-    std::cout << "　　　■　　■　　　■　　　■　　　　　　　■　　　　　　　　　　　■　　　　　　　　　　　　　■　　　　　■　■" << std::endl;
-    std::cout << "　　　■　■　■　■■■　■■■　　■■■　■　■■■　■　　■　■　■　■■■　　■　■　■　　　■■■　■　■" << std::endl;
-    std::cout << "　　　■　■■■　　■　　　■　　　■　■　■　■　■　　■■　　■■■　■　■　　■　■　■　■　■　■　　　　" << std::endl;
+    std::cout << "　　　■　　　　　　■■　　　　　　　　　　■　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　■　■　　　" << std::endl;
+    std::cout << "　　　■　　■　　　■　　　■　　　　　　　■　　　　　　　　　　　■　　　　　　　　　　　　　■　　　　　■　■　　　" << std::endl;
+    std::cout << "　　　■　■　■　■■■　■■■　　■■■　■　■■■　■　　■　■　■　■■■　　■　■　■　　　■■■　■　■　　　" << std::endl;
+    std::cout << "　　　■　■■■　　■　　　■　　　■　■　■　■　■　　■■　　■■■　■　■　　■　■　■　■　■　■　　　　　　　" << std::endl;
     std::cout << "　　　■　■　　　　■　　　■■　　■■■　■　■■■■　■　　　■　　　■　　　　　■　■　　■　■　■　■　■　　　" << std::endl;
-    std::cout << "　　　　　　■　　　　　　　　　　　■　　　　　　　　　■　　　　　■　　　　　　　　　　　　　　　　　　　　　" << std::endl;
-    std::cout << "　　　　　　　　　　　　　　　　　　■　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　" << std::endl;
+    std::cout << "　　　　　　■　　　　　　　　　　　■　　　　　　　　　■　　　　　■　　　　　　　　　　　　　　　　　　　　　　　　　" << std::endl;
+    std::cout << "　　　　　　　　　　　　　　　　　　■　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　" << std::endl;
     std::cout << std::endl;
     std::cout << std::endl;
     std::cout << "　　　　　　　　　　　　　　　　　　　　　　　　　PRESS ENTER KEY" << std::endl;
