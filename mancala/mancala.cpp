@@ -19,8 +19,8 @@ void drawResult(Mancala mancala);
 void drawResult_leftWin();
 void drawResult_rightWin();
 void drawResult_drawGame();
+void drawStoneNum(Pocket pocket);
 KeyCode getKeyCode();
-
 
 int main()
 {
@@ -74,11 +74,12 @@ int main()
             drawGame(mancala);
             break;
         case GameState::Result:
+            drawResult(mancala);
+            if (getKeyCode() == KeyCode::ENTER)   mancala.gameState = GameState::Title;
             break;
         default:
             break;
         }
-        if (mancala.gameState == GameState::Result)   break;
     }
 
     return 0;
@@ -147,41 +148,35 @@ void drawGame(Mancala mancala)
 {
     clearText();
 
-    auto leftPockets = mancala.GetPockets(0);
-    auto rightPockets = mancala.GetPockets(1);
+    auto leftPockets = mancala.GetPockets(PlayerID::Left);
+    auto rightPockets = mancala.GetPockets(PlayerID::Right);
 
     std::cout << std::endl;
-    std::cout << "  右側：" << mancala.GetGool(1).GetStoneNum() << std::endl;
+    std::cout << "  右側：" << mancala.GetGool(PlayerID::Right).GetStoneNum();
+    mancala.GetGoalText(PlayerID::Right);
+    std::cout << std::endl;
     std::cout << std::endl;
 
     for (int i = 0; i < 6; i++)
     {
-        if (mancala.turnPlayer == PlayerID::Left && mancala.cursor == i)
-        {
-            std::cout << "   > ";
-        }
-        else
-        {
-            std::cout << "     ";
-        }
+        std::cout << mancala.GetCursorText(PlayerID::Left, i) << "|";
+        drawStoneNum(leftPockets[i]);
+        std::cout << "| |";
+        drawStoneNum(rightPockets[i]);
+        std::cout << "|" << mancala.GetCursorText(PlayerID::Right, i);
 
-        std::cout << "|" << leftPockets[i].GetStoneNum() << "| |" << rightPockets[i].GetStoneNum() << "|";
-
-        if (mancala.turnPlayer == PlayerID::Right && mancala.cursor == i)
-        {
-            std::cout << " < ";
-        }
         std::cout << std::endl;
     }
 
     std::cout << std::endl;
-    std::cout << "  左側：" << mancala.GetGool(0).GetStoneNum() << std::endl;
+    std::cout << "  左側：" << mancala.GetGool(PlayerID::Left).GetStoneNum();
+    mancala.GetGoalText(PlayerID::Right);
     std::cout << std::endl;
 }
 
 void drawResult(Mancala mancala)
 {
-    if (mancala.GetGool(0).GetStoneNum() > mancala.GetGool(1).GetStoneNum())
+    if (mancala.GetGool(PlayerID::Left).GetStoneNum() > mancala.GetGool(PlayerID::Right).GetStoneNum())
     {
         drawResult_leftWin();
     }
@@ -190,7 +185,7 @@ void drawResult(Mancala mancala)
         drawResult_rightWin();
     }
 
-    if (mancala.GetGool(0).GetStoneNum() == mancala.GetGool(1).GetStoneNum())
+    if (mancala.GetGool(PlayerID::Left).GetStoneNum() == mancala.GetGool(PlayerID::Right).GetStoneNum())
     {
         drawResult_drawGame();
     }
@@ -202,24 +197,58 @@ void drawResult_leftWin()
 
     std::cout << std::endl;
     std::cout << std::endl;
-    std::cout << "　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　■　　　　　　" << std::endl;
-    std::cout << "　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　■　　　　　　" << std::endl;
-    std::cout << "　　　■■■■■　　■■■　　■■■　　■■■　　■■■　　■　　■■■　" << std::endl;
-    std::cout << "　　　■　■　■　　■　■　　■　■　　■　　　　■　■　　■　　■　■　" << std::endl;
-    std::cout << "　　　■　■　■　　■■■■　■　■　　■■■　　■■■■　■　　■■■■" << std::endl;
+    std::cout << "　　　　　　　　　　　　　■　　　　　　　　　　　　■　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　■　■" << std::endl;
+    std::cout << "　　　　　　　■　　　　　■　　　　■　　　　　　　■　　　　　　　　　　　■　　　　　　　　　　　　　■　　　　　■　■" << std::endl;
+    std::cout << "　　　■■■　　　■■■　■■■　■■■　　■■■　■　■■■　■　　■　■　■　■■■　　■　■　■　　　■■■　■　■" << std::endl;
+    std::cout << "　　　■　■　■　■　■　■　■　　■　　　■　■　■　■　■　　■■　　■■■　■　■　　■　■　■　■　■　■　　　　" << std::endl;
+    std::cout << "　　　■　　　■　■■■　■　■　　■■　　■■■　■　■■■■　■　　　■　　　■　　　　　■　■　　■　■　■　■　■　　　" << std::endl;
+    std::cout << "　　　　　　　　　　　■　　　　　　　　　　■　　　　　　　　　■　　　　　■　　　　　　　　　　　　　　　　　　　　　" << std::endl;
+    std::cout << "　　　　　　　　　■■■　　　　　　　　　　■　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　" << std::endl;
     std::cout << std::endl;
     std::cout << std::endl;
-    std::cout << "　　　　　　　　　　　　　　　　PRESS ENTER KEY" << std::endl;
+    std::cout << "　　　　　　　　　　　　　　　　　　　　　　　　　　　　　PRESS ENTER KEY" << std::endl;
 }
 
 void drawResult_rightWin()
 {
+    clearText();
 
+    std::cout << std::endl;
+    std::cout << std::endl;
+    std::cout << "　　　■　　　　　　■■　　　　　　　　　　■　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　■　■" << std::endl;
+    std::cout << "　　　■　　■　　　■　　　■　　　　　　　■　　　　　　　　　　　■　　　　　　　　　　　　　■　　　　　■　■" << std::endl;
+    std::cout << "　　　■　■　■　■■■　■■■　　■■■　■　■■■　■　　■　■　■　■■■　　■　■　■　　　■■■　■　■" << std::endl;
+    std::cout << "　　　■　■■■　　■　　　■　　　■　■　■　■　■　　■■　　■■■　■　■　　■　■　■　■　■　■　　　　" << std::endl;
+    std::cout << "　　　■　■　　　　■　　　■■　　■■■　■　■■■■　■　　　■　　　■　　　　　■　■　　■　■　■　■　■　　　" << std::endl;
+    std::cout << "　　　　　　■　　　　　　　　　　　■　　　　　　　　　■　　　　　■　　　　　　　　　　　　　　　　　　　　　" << std::endl;
+    std::cout << "　　　　　　　　　　　　　　　　　　■　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　" << std::endl;
+    std::cout << std::endl;
+    std::cout << std::endl;
+    std::cout << "　　　　　　　　　　　　　　　　　　　　　　　　　PRESS ENTER KEY" << std::endl;
 }
 
 void drawResult_drawGame()
 {
+    clearText();
 
+    std::cout << std::endl;
+    std::cout << std::endl;
+    std::cout << "　　　　　■　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　" << std::endl;
+    std::cout << "　　　　　■　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　■　　" << std::endl;
+    std::cout << "　　　■■■　■■■　■■■　■　■　■　　■■■　■■■　　■■■■■　■　■　" << std::endl;
+    std::cout << "　　　■　■　■　■　■　■　■　■　■　　■　■　■　■　　■　■　■　■■■　" << std::endl;
+    std::cout << "　　　■■■　■　　　■■■■　■　■　　　■■■　■■■■　■　■　■　■　　　" << std::endl;
+    std::cout << "　　　　　　　　　　　　　　　　　　　　　　　　■　　　　　　　　　　　　　■　　" << std::endl;
+    std::cout << "　　　　　　　　　　　　　　　　　　　　　　■■■　　　　　　　　　　　　　　　　" << std::endl;
+    std::cout << std::endl;
+    std::cout << std::endl;
+    std::cout << "　　　　　　　　　　　　　　　　　PRESS ENTER KEY" << std::endl;
+}
+
+void drawStoneNum(Pocket pocket)
+{
+    if (pocket.GetStoneNum() < 10)   std::cout << " ";
+    std::cout << pocket.GetStoneNum();
 }
 
 KeyCode getKeyCode()
