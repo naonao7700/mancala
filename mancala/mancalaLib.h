@@ -36,6 +36,9 @@ public:
 
 	//石を追加する
 	void AddStoneNum(int num);
+
+	//石を空にする
+	void ResetStone();
 };
 
 //入力したキーの種類
@@ -80,6 +83,20 @@ private:
 
 	void ChangeTurn();	//相手のターンへ
 
+	int GetSteelPos(int pos);	//横取りの位置を取得する
+
+	//横取り可能か取得する
+	bool CanSteal();
+
+	//ぴったりゴールか取得する
+	bool IsJust();
+
+	//終了するか判定する
+	bool IsFinish();
+
+	//横取りしたか判定する
+	bool IsSteel();
+
 public:
 	GameState gameState;	//ゲームの状態
 	int cursor;	//カーソル位置
@@ -101,12 +118,6 @@ public:
 	//デストラクタ
 	~Mancala();
 
-	//横取り可能か取得する
-	bool CanSteal();
-
-	//ぴったりゴールか取得する
-	bool IsJust();
-
 	//ボードの変化を反映させる
 	void Update();
 
@@ -119,4 +130,7 @@ public:
 
 	//ゴールポケットの矢印描画を取得する
 	std::string GetGoalText(PlayerID id);
+
+	//ゲーム中に描画するテキストを取得する
+	std::string GetGameText();
 };
