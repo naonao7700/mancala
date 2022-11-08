@@ -1,4 +1,6 @@
 #include "mancalaLib.h"
+#include<stdio.h>
+#include<windows.h>
 
 int Mancala::GetCursorPos()
 {
@@ -11,7 +13,7 @@ int Mancala::GetNextPos()
 {
 	switch (handCursor)
 	{
-	case 0: return 13;
+	case 0: return 12;
 	case 1: return 2;
 	case 2: return 3;
 	case 3: return 4;
@@ -24,6 +26,7 @@ int Mancala::GetNextPos()
 	case 10: return 9;
 	case 11: return 10;
 	case 12: return 11;
+	case 13: return 1;
 	}
 	return 0;
 }
@@ -31,8 +34,7 @@ int Mancala::GetNextPos()
 void Mancala::MoveUpdate()
 {
 	handCursor = GetNextPos();
-	auto pocket = pockets[handCursor];
-	pocket.AddStoneNum(1);
+	pockets[handCursor].AddStoneNum(1);
 	handNum--;
 
 	if (handNum <= 0)
@@ -141,6 +143,7 @@ void Mancala::Update()
 	case GameState::Game_Steel: SteelUpdate(); break;
 	case GameState::Game_Finish: FinishUpdate(); break;
 	}
+	Sleep(1000);
 }
 
 //カーソルを上へ移動する
@@ -172,10 +175,23 @@ void Mancala::OnEnterKey()
 	handNum = pocket.GetStoneNum();
 
 	//ポケットを空にする
-	pocket.AddStoneNum(-handNum);
+	pockets[handCursor].AddStoneNum(-handNum);
 
 	gameState = GameState::Game_Move;
 
+}
+
+std::string Mancala::GetCursorText(PlayerID id, int index)
+{
+	auto str = ">";
+	if (id == PlayerID::Right) str = "<";
+	if (cursor != index) str = " ";
+	return str;
+}
+
+std::string Mancala::GetGoalText(PlayerID id)
+{
+	return " ";
 }
 
 Pocket::Pocket(int stoneNum)

@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <string>
 
 //ゲームの状態
 enum class GameState
@@ -111,4 +112,10 @@ public:
 	void OnUpKey();	//↑キーを押したとき
 	void OnDownKey();	//↓キーを押したとき
 	void OnEnterKey();	//Enterキーを押したとき
+
+	//ポケットの矢印描画を取得する
+	std::string GetCursorText(PlayerID id, int index);
+
+	//ゴールポケットの矢印描画を取得する
+	std::string GetGoalText(PlayerID id);
 };
