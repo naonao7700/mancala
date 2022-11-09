@@ -16,9 +16,9 @@ void drawTitle();
 void drawRule();
 void drawGame(Mancala mancala);
 void drawResult(Mancala mancala);
-void drawResult_leftWin();
-void drawResult_rightWin();
-void drawResult_drawGame();
+void drawResult_leftWin(Mancala mancala);
+void drawResult_rightWin(Mancala mancala);
+void drawResult_drawGame(Mancala mancala);
 void drawStoneNum(Pocket pocket);
 KeyCode getKeyCode();
 
@@ -154,8 +154,7 @@ void drawGame(Mancala mancala)
 
     std::cout << std::endl;
     std::cout << "  右側：" << mancala.GetGool(PlayerID::Right).GetStoneNum();
-    mancala.GetGoalText(PlayerID::Right);
-    std::cout << std::endl;
+    std::cout << mancala.GetGoalText(PlayerID::Right) << std::endl;
     std::cout << std::endl;
 
     for (int i = 0; i < 6; i++)
@@ -171,27 +170,26 @@ void drawGame(Mancala mancala)
 
     std::cout << std::endl;
     std::cout << "  左側：" << mancala.GetGool(PlayerID::Left).GetStoneNum();
-    mancala.GetGoalText(PlayerID::Right);
-    std::cout << std::endl;
+    std::cout << mancala.GetGoalText(PlayerID::Left) << std::endl;
 }
 
 void drawResult(Mancala mancala)
 {
     if (mancala.GetGool(PlayerID::Left).GetStoneNum() > mancala.GetGool(PlayerID::Right).GetStoneNum())
     {
-        drawResult_leftWin();
+        drawResult_leftWin(mancala);
     }
     else if (mancala.GetGool(PlayerID::Left).GetStoneNum() == mancala.GetGool(PlayerID::Right).GetStoneNum())
     {
-        drawResult_drawGame();
+        drawResult_drawGame(mancala);
     }
     else
     {
-        drawResult_rightWin();
+        drawResult_rightWin(mancala);
     }
 }
 
-void drawResult_rightWin()
+void drawResult_rightWin(Mancala mancala)
 {
     clearText();
 
@@ -205,12 +203,13 @@ void drawResult_rightWin()
     std::cout << "　　　　　　　　　　　■　　　　　　　　　　　　　　　　　　　　　　　　　　　　" << std::endl;
     std::cout << "　　　　　　　　　■■■　　　　　　　　　　　　　　　　　　　　　　　　　　　　" << std::endl;
     std::cout << std::endl;
+    std::cout << "　　　　　　　　　　　　　　　　  " << mancala.GetGool(PlayerID::Left).GetStoneNum() << " - " << mancala.GetGool(PlayerID::Right).GetStoneNum() << std::endl;
     std::cout << "　　　　　　　　　　　　　　右側のプレイヤーの勝利!!" << std::endl;
     std::cout << std::endl;
     std::cout << "　　　　　　　　　　　　　 　　　PRESS ENTER KEY" << std::endl;
 }
 
-void drawResult_leftWin()
+void drawResult_leftWin(Mancala mancala)
 {
     clearText();
 
@@ -224,12 +223,13 @@ void drawResult_leftWin()
     std::cout << "　　　　　　■　　　　　　　　　　　　　　　　　　　　　　　　　　　　　" << std::endl;
     std::cout << "　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　" << std::endl;
     std::cout << std::endl;
+    std::cout << "　　　　　　　　　　　　　 " << mancala.GetGool(PlayerID::Left).GetStoneNum() << " - " << mancala.GetGool(PlayerID::Right).GetStoneNum() << std::endl;
     std::cout << "　　　　　　　　　　　左側のプレイヤーの勝利!!" << std::endl;
     std::cout << std::endl;
     std::cout << "　　　　　　　　　　　　　PRESS ENTER KEY" << std::endl;
 }
 
-void drawResult_drawGame()
+void drawResult_drawGame(Mancala mancala)
 {
     clearText();
 
@@ -243,6 +243,7 @@ void drawResult_drawGame()
     std::cout << "　　　　　　　　　　　　　　　　　　　　　　　　■　　　　　　　　　　　　　■　　" << std::endl;
     std::cout << "　　　　　　　　　　　　　　　　　　　　　　■■■　　　　　　　　　　　　　　　　" << std::endl;
     std::cout << std::endl;
+    std::cout << "　　　　　　　　　　　　　　　　　　 " << mancala.GetGool(PlayerID::Left).GetStoneNum() << " - " << mancala.GetGool(PlayerID::Right).GetStoneNum() << std::endl;
     std::cout << "　　　　　　　　　　　　　　　　　　引き分け!!" << std::endl;
     std::cout << std::endl;
     std::cout << "　　　　　　　　　　　　　　　　PRESS ENTER KEY" << std::endl;
