@@ -309,6 +309,7 @@ void Mancala::OnEnterKey()
 	handCursor = GetCursorPos();
 	auto pocket = pockets[handCursor];
 	handNum = pocket.GetStoneNum();
+	if (handNum == 0) return;	//空は選択不可
 
 	//ポケットを空にする
 	pockets[handCursor].ResetStone();
