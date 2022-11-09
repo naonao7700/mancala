@@ -52,11 +52,11 @@ void Mancala::MoveUpdate()
 		}
 		else if (IsJust())
 		{
-			gameState == GameState::Game_Just;
+			gameState = GameState::Game_Just;
 		}
 		else if (IsSteel())
 		{
-			gameState == GameState::Game_Steel;
+			gameState = GameState::Game_Steel;
 		}
 		else
 		{
@@ -75,10 +75,33 @@ void Mancala::JustUpdate()
 }
 
 //横取りの処理
+//自分と向かい側の相手のポケットの石を全て自分のゴールへ入れる
 void Mancala::SteelUpdate()
 {
+	//自分のポケットを空にする
+	int num = 1;
 	pockets[handCursor].ResetStone();
 
+	//向かい側を取得する
+	int pos = GetSteelPos(handCursor);
+
+	//入れる石を加算
+	num += pockets[pos].GetStoneNum();
+
+	//向かい側のポケットを空にする
+	pockets[pos].ResetStone();
+
+	//ゴールへ石を入れる
+	if (turnPlayer == PlayerID::Left)
+	{
+		pockets[0].AddStoneNum(num);
+	}
+	else
+	{
+		pockets[13].AddStoneNum(num);
+	}
+
+	//相手のターンへ
 	gameState = GameState::Game_Input;
 	ChangeTurn();
 }
