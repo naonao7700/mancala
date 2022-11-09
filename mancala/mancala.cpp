@@ -191,7 +191,7 @@ void drawResult(Mancala mancala)
     }
 }
 
-void drawResult_leftWin()
+void drawResult_rightWin()
 {
     clearText();
 
@@ -210,7 +210,7 @@ void drawResult_leftWin()
     std::cout << "　　　　　　　　　　　　　 　　　PRESS ENTER KEY" << std::endl;
 }
 
-void drawResult_rightWin()
+void drawResult_leftWin()
 {
     clearText();
 
@@ -224,7 +224,7 @@ void drawResult_rightWin()
     std::cout << "　　　　　　■　　　　　　　　　　　　　　　　　　　　　　　　　　　　　" << std::endl;
     std::cout << "　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　" << std::endl;
     std::cout << std::endl;
-    std::cout << "　　　　　　　　　　　右側のプレイヤーの勝利!!" << std::endl;
+    std::cout << "　　　　　　　　　　　左側のプレイヤーの勝利!!" << std::endl;
     std::cout << std::endl;
     std::cout << "　　　　　　　　　　　　　PRESS ENTER KEY" << std::endl;
 }
@@ -243,6 +243,7 @@ void drawResult_drawGame()
     std::cout << "　　　　　　　　　　　　　　　　　　　　　　　　■　　　　　　　　　　　　　■　　" << std::endl;
     std::cout << "　　　　　　　　　　　　　　　　　　　　　　■■■　　　　　　　　　　　　　　　　" << std::endl;
     std::cout << std::endl;
+    std::cout << "　　　　　　　　　　　　　　　　　　引き分け!!" << std::endl;
     std::cout << std::endl;
     std::cout << "　　　　　　　　　　　　　　　　PRESS ENTER KEY" << std::endl;
 }
