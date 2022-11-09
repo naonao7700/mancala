@@ -75,7 +75,7 @@ int main()
             break;
         case GameState::Result:
             drawResult(mancala);
-            if (getKeyCode() == KeyCode::ENTER)   mancala.gameState = GameState::Title;
+            if (getKeyCode() == KeyCode::ENTER)   return 0;
             break;
         default:
             break;
