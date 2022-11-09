@@ -177,11 +177,15 @@ bool Mancala::CanSteal()
 	return false;
 }
 
+//ぴったりゴールか判定
+//最後に石を落とした位置がゴールポケットならぴったりゴール
 bool Mancala::IsJust()
 {
-	return false;
+	return (handCursor == 0 || handCursor == 13);
 }
 
+//ゲームが終了するか判定
+//どちらかのポケットが全て0なら終了
 bool Mancala::IsFinish()
 {
 	int cnt = 0;
@@ -202,13 +206,16 @@ bool Mancala::IsFinish()
 	return false;
 }
 
+//横取りしたか判定する
 bool Mancala::IsSteel()
 {
 	if (handCursor == 0 || handCursor == 13) return false;	//ゴールは横取りしない
 
+	//横取り先を取得する
 	int pos = GetSteelPos(handCursor);
-	if (pockets[pos].GetStoneNum() > 0 && pockets[handCursor].GetStoneNum() == 1) return true;
-	return false;
+
+	//横取り先に石があるかつ、最後のポケットが空だったら(石を落としたので１つになっている)
+	return (pockets[pos].GetStoneNum() > 0 && pockets[handCursor].GetStoneNum() == 1);
 }
 
 void Mancala::Update()
@@ -258,6 +265,7 @@ void Mancala::OnEnterKey()
 
 }
 
+//カーソルの描画を取得する
 std::string Mancala::GetCursorText(PlayerID id, int index)
 {
 	auto str = ">";
@@ -296,6 +304,7 @@ std::string Mancala::GetGoalText(PlayerID id)
 	return str;
 }
 
+//ゲーム中の表示テキストを取得する
 std::string Mancala::GetGameText()
 {
 	if (gameState == GameState::Game_Input)
