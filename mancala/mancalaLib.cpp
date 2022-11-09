@@ -101,28 +101,54 @@ void Mancala::SteelUpdate()
 		pockets[13].AddStoneNum(num);
 	}
 
-	//相手のターンへ
-	gameState = GameState::Game_Input;
-	ChangeTurn();
+	if (IsFinish())
+	{//終了判定
+
+		gameState = GameState::Game_Finish;
+	}
+	else
+	{
+		//相手のターンへ
+		gameState = GameState::Game_Input;
+		ChangeTurn();
+	}
 }
 
 //終了時の処理
 void Mancala::FinishUpdate()
 {
+	//陣地ポケットの石を自分のゴールへ加算する
 	for (int i = 0; i < 6; ++i)
 	{
 		int Lindex = 1 + i;
 		int Rindex = 7 + i;
 
+		//ゴールへ加算
 		pockets[0].AddStoneNum(pockets[Lindex].GetStoneNum());
-		pockets[Lindex].ResetStone();
+		pockets[Lindex].ResetStone();	//石をリセット
 
+		//ゴールへ加算
 		pockets[13].AddStoneNum(pockets[Rindex].GetStoneNum());
-		pockets[Rindex].ResetStone();
-
+		pockets[Rindex].ResetStone();	//石をリセット
 	}
+
+	if (pockets[0].GetStoneNum() < pockets[13].GetStoneNum())
+	{
+		result = Result::Win;
+	}
+	else if (pockets[0].GetStoneNum() > pockets[13].GetStoneNum())
+	{
+		result = Result::Lose;
+	}
+	else
+	{
+		result = Result::Draw;
+	}
+
+	gameState = GameState::Result;
 }
 
+//ターンを切り替える
 void Mancala::ChangeTurn()
 {
 	if (turnPlayer == PlayerID::Right) turnPlayer = PlayerID::Left;
@@ -182,7 +208,7 @@ Mancala::Mancala()
 
 	for (int i = 0; i < 14; ++i)
 	{
-		pockets.push_back(Pocket(5));
+		pockets.push_back(Pocket(4));
 	}
 	pockets[0].ResetStone();
 	pockets[13].ResetStone();
@@ -233,6 +259,9 @@ bool Mancala::IsFinish()
 bool Mancala::IsSteel()
 {
 	if (handCursor == 0 || handCursor == 13) return false;	//ゴールは横取りしない
+	
+	//相手側の陣地なら発動しない
+	if ((turnPlayer == PlayerID::Right && handCursor < 7) || (turnPlayer == PlayerID::Left && handCursor > 6)) return false;
 
 	//横取り先を取得する
 	int pos = GetSteelPos(handCursor);
@@ -294,7 +323,12 @@ std::string Mancala::GetCursorText(PlayerID id, int index)
 	auto str = ">";
 	if (id == PlayerID::Right) str = "<";
 
-	if (gameState == GameState::Game_Move)
+	if (gameState == GameState::Game_Input )
+	{
+		if (cursor != index) str = " ";
+		if (turnPlayer != id) str = " ";
+	}
+	else
 	{
 		int pos = GetCursorPos(id, index);
 		if (pos != handCursor)
@@ -302,18 +336,13 @@ std::string Mancala::GetCursorText(PlayerID id, int index)
 			str = " ";
 		}
 	}
-	else
-	{
-		if (cursor != index) str = " ";
-		if (turnPlayer != id) str = " ";
-	}
 	return str;
 }
 
 std::string Mancala::GetGoalText(PlayerID id)
 {
 	auto str = " ";
-	if (gameState == GameState::Game_Move)
+	if (gameState != GameState::Game_Input )
 	{
 		if (id == PlayerID::Left && handCursor == 0)
 		{
