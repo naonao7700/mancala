@@ -151,6 +151,8 @@ void drawGame(Mancala mancala)
     auto leftPockets = mancala.GetPockets(PlayerID::Left);
     auto rightPockets = mancala.GetPockets(PlayerID::Right);
 
+    std::cout << mancala.GetGameText() << std::endl;
+
     std::cout << std::endl;
     std::cout << "  右側：" << mancala.GetGool(PlayerID::Right).GetStoneNum();
     mancala.GetGoalText(PlayerID::Right);
@@ -180,14 +182,13 @@ void drawResult(Mancala mancala)
     {
         drawResult_leftWin();
     }
+    else if (mancala.GetGool(PlayerID::Left).GetStoneNum() == mancala.GetGool(PlayerID::Right).GetStoneNum())
+    {
+        drawResult_drawGame();
+    }
     else
     {
         drawResult_rightWin();
-    }
-
-    if (mancala.GetGool(PlayerID::Left).GetStoneNum() == mancala.GetGool(PlayerID::Right).GetStoneNum())
-    {
-        drawResult_drawGame();
     }
 }
 
