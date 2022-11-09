@@ -113,18 +113,16 @@ void drawRule()
 
     std::cout << "・ルールの概要（参考：wikipedia）" << std::endl;
     std::cout << "　1. プレイ人数は2人。" << std::endl;
-    std::cout << "　2. 多くのゲームでは横長に6～12個程度を2列に並べた穴を使いゲームを行う。" << std::endl;
+    std::cout << "　2. 縦長に6個ずつ2列に並べた穴を使いゲームを行う。" << std::endl;
     std::cout << "　　 一方の列の穴は一人のプレイヤーのものであり、他方の列の穴はもう一方のプレイヤーのものである。" << std::endl;
-    std::cout << "　　 今回は縦長に各列6個の穴を用意した。" << std::endl;
-    std::cout << "　3. 開始時に各穴に決まった数の石を入れ、各手番ごとにsowing(種蒔き)と呼ばれる方法で石を動かす。" << std::endl;
+    std::cout << "　3. 開始時に各穴に4つの石を入れ、各手番ごとにsowing(種蒔き)と呼ばれる方法で石を動かす。" << std::endl;
     std::cout << "　　 これは自分の穴からどれか1つを選び、その穴にある全ての石を1つずつ隣の穴から順番に入れていく動作である。" << std::endl;
-    std::cout << "　4. 2列に並んだ穴の左右に1つずつ大きな穴があることも多い。今回は縦長のため、上下にこの穴を設置した。" << std::endl;
-    std::cout << "　　 この穴は単に取った石を入れておくだけの役割のこともあるが、sowingで石を入れるルールもある。" << std::endl;
-    std::cout << "　　 今回は後者を採用し、この大きな穴をゴールと呼ぶ。" << std::endl;
+    std::cout << "　4. 2列に並んだ穴の上下に1つずつ大きな穴があり、それぞれがプレイヤーのゴールとなる。" << std::endl;
+    std::cout << "　　 sowingの際自陣のゴールには、他の穴と同様に石がまかれる。" << std::endl;
+    std::cout << "　　 プレイヤーはこのゴールにより多くの石を集めることで勝利となる。" << std::endl;
     std::cout << "　5. 穴に入れる石自体には敵味方の区別がなく、全ての石は同じ価値を持つ。" << std::endl;
     std::cout << "　　 各プレイヤーは自分の列の穴にある石のみをsowingにより動かせる。" << std::endl;
-    std::cout << "　6. sowingした石の最後の石が撒かれる穴の状態によって、追加での効果が発生するルールもある。" << std::endl;
-    std::cout << "　　 今回は「横取り」と「ぴったりゴール」の2つのルールを追加する。" << std::endl;
+    std::cout << "　6. sowingした石の最後の石が撒かれる穴の状態によって、「横取り」と「ぴったりゴール」の2つのルールが発生する。" << std::endl;
     std::cout << "　7. どちらかの陣地の石が全て無くなればゲーム終了となる。" << std::endl;
     std::cout << "　　 このとき陣地の石を先に無くしたプレイヤーは敵陣に残っている石を全て獲得することができ、" << std::endl;
     std::cout << "　　 最終的により多くの石が自分のゴールに入っているプレイヤーが勝利となる。" << std::endl;
@@ -199,16 +197,17 @@ void drawResult_leftWin()
 
     std::cout << std::endl;
     std::cout << std::endl;
-    std::cout << "　　　　　　　　　　　　　■　　　　　　　　　　　　■　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　■　■　　　" << std::endl;
-    std::cout << "　　　　　　　■　　　　　■　　　　■　　　　　　　■　　　　　　　　　　　■　　　　　　　　　　　　　■　　　　　■　■　　　" << std::endl;
-    std::cout << "　　　■■■　　　■■■　■■■　■■■　　■■■　■　■■■　■　　■　■　■　■■■　　■　■　■　　　■■■　■　■　　　" << std::endl;
-    std::cout << "　　　■　■　■　■　■　■　■　　■　　　■　■　■　■　■　　■■　　■■■　■　■　　■　■　■　■　■　■　　　　　　　" << std::endl;
-    std::cout << "　　　■　　　■　■■■　■　■　　■■　　■■■　■　■■■■　■　　　■　　　■　　　　　■　■　　■　■　■　■　■　　　" << std::endl;
-    std::cout << "　　　　　　　　　　　■　　　　　　　　　　■　　　　　　　　　■　　　　　■　　　　　　　　　　　　　　　　　　　　　　　　　" << std::endl;
-    std::cout << "　　　　　　　　　■■■　　　　　　　　　　■　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　" << std::endl;
+    std::cout << "　　　　　　　　　　　　　■　　　　　　　　　　　　　　　　　　　　■　■　　　" << std::endl;
+    std::cout << "　　　　　　　■　　　　　■　　　　■　　　　　　　　　■　　　　　■　■　　　" << std::endl;
+    std::cout << "　　　■■■　　　■■■　■■■　■■■　　■　■　■　　　■■■　■　■　　　" << std::endl;
+    std::cout << "　　　■　■　■　■　■　■　■　　■　　　■　■　■　■　■　■　　　　　　　" << std::endl;
+    std::cout << "　　　■　　　■　■■■　■　■　　■■　　　■　■　　■　■　■　■　■　　　" << std::endl;
+    std::cout << "　　　　　　　　　　　■　　　　　　　　　　　　　　　　　　　　　　　　　　　　" << std::endl;
+    std::cout << "　　　　　　　　　■■■　　　　　　　　　　　　　　　　　　　　　　　　　　　　" << std::endl;
     std::cout << std::endl;
+    std::cout << "　　　　　　　　　　　　　　右側のプレイヤーの勝利!!" << std::endl;
     std::cout << std::endl;
-    std::cout << "　　　　　　　　　　　　　　　　　　　　　　　　　　　　　PRESS ENTER KEY" << std::endl;
+    std::cout << "　　　　　　　　　　　　　 　　　PRESS ENTER KEY" << std::endl;
 }
 
 void drawResult_rightWin()
@@ -217,16 +216,17 @@ void drawResult_rightWin()
 
     std::cout << std::endl;
     std::cout << std::endl;
-    std::cout << "　　　■　　　　　　■■　　　　　　　　　　■　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　■　■　　　" << std::endl;
-    std::cout << "　　　■　　■　　　■　　　■　　　　　　　■　　　　　　　　　　　■　　　　　　　　　　　　　■　　　　　■　■　　　" << std::endl;
-    std::cout << "　　　■　■　■　■■■　■■■　　■■■　■　■■■　■　　■　■　■　■■■　　■　■　■　　　■■■　■　■　　　" << std::endl;
-    std::cout << "　　　■　■■■　　■　　　■　　　■　■　■　■　■　　■■　　■■■　■　■　　■　■　■　■　■　■　　　　　　　" << std::endl;
-    std::cout << "　　　■　■　　　　■　　　■■　　■■■　■　■■■■　■　　　■　　　■　　　　　■　■　　■　■　■　■　■　　　" << std::endl;
-    std::cout << "　　　　　　■　　　　　　　　　　　■　　　　　　　　　■　　　　　■　　　　　　　　　　　　　　　　　　　　　　　　　" << std::endl;
-    std::cout << "　　　　　　　　　　　　　　　　　　■　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　" << std::endl;
+    std::cout << "　　　■　　　　　　■■　　　　　　　　　　　　　　　　　　■　■　　　" << std::endl;
+    std::cout << "　　　■　　■　　　■　　　■　　　　　　　　　■　　　　　■　■　　　" << std::endl;
+    std::cout << "　　　■　■　■　■■■　■■■　　■　■　■　　　■■■　■　■　　　" << std::endl;
+    std::cout << "　　　■　■■■　　■　　　■　　　■　■　■　■　■　■　　　　　　　" << std::endl;
+    std::cout << "　　　■　■　　　　■　　　■■　　　■　■　　■　■　■　■　■　　　" << std::endl;
+    std::cout << "　　　　　　■　　　　　　　　　　　　　　　　　　　　　　　　　　　　　" << std::endl;
+    std::cout << "　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　" << std::endl;
     std::cout << std::endl;
+    std::cout << "　　　　　　　　　　　右側のプレイヤーの勝利!!" << std::endl;
     std::cout << std::endl;
-    std::cout << "　　　　　　　　　　　　　　　　　　　　　　　　　PRESS ENTER KEY" << std::endl;
+    std::cout << "　　　　　　　　　　　　　PRESS ENTER KEY" << std::endl;
 }
 
 void drawResult_drawGame()
@@ -244,7 +244,7 @@ void drawResult_drawGame()
     std::cout << "　　　　　　　　　　　　　　　　　　　　　　■■■　　　　　　　　　　　　　　　　" << std::endl;
     std::cout << std::endl;
     std::cout << std::endl;
-    std::cout << "　　　　　　　　　　　　　　　　　PRESS ENTER KEY" << std::endl;
+    std::cout << "　　　　　　　　　　　　　　　　PRESS ENTER KEY" << std::endl;
 }
 
 void drawStoneNum(Pocket pocket)
