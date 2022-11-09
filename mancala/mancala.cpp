@@ -87,7 +87,8 @@ int main()
 
 void clearText()
 {
-    std::cout << "\x1B[2J\x1B[H";
+    //std::cout << "\x1B[2J\x1B[H";
+    system("cls");
 }
 
 void drawTitle()
