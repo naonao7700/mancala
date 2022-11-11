@@ -3,16 +3,30 @@
 #include <stdlib.h>
 #include <conio.h>
 
+#define STONE_NUM_MIN 1
+#define STONE_NUM_MAX 8
+
 enum class KeyCode
 {
     NONE,
     UP,
     DOWN,
+    RIGHT,
+    LEFT,
     ENTER,
 };
 
+enum TitleCursor
+{
+    GAME_START,
+    RULE,
+    CHANGE_STONE,
+
+    CURSOR_MAX_NUM,
+};
+
 void clearText();
-void drawTitle();
+void drawTitle(int stoneNum, int cursorNum);
 void drawRule();
 void drawGame(Mancala mancala);
 void drawResult(Mancala mancala);
@@ -20,25 +34,48 @@ void drawResult_leftWin(Mancala mancala);
 void drawResult_rightWin(Mancala mancala);
 void drawResult_drawGame(Mancala mancala);
 void drawStoneNum(Pocket pocket);
+std::string getTitleCursorText(TitleCursor titleCursor, int nowCursor);
 KeyCode getKeyCode();
 
 int main()
 {
-    Mancala mancala{};
+    int stoneNum = 4;
+    int titleCursorNum = TitleCursor::GAME_START;
 
-    mancala.gameState = GameState::Title;
+    Mancala mancala{};
 
     while (true)
     {
         switch (mancala.gameState)
         {
         case GameState::Title:
-            drawTitle();
-            if (getKeyCode() == KeyCode::ENTER)   mancala.gameState = GameState::Rule;
+        {
+            drawTitle(stoneNum, titleCursorNum);
+            KeyCode key = getKeyCode();
+            if (key == KeyCode::ENTER)
+            {
+                if (titleCursorNum == TitleCursor::GAME_START)
+                {
+                    mancala.gameState = GameState::Game_Input;
+                    mancala.Init(stoneNum);
+                }
+                if (titleCursorNum == TitleCursor::RULE)         mancala.gameState = GameState::Rule;
+            }
+            else if (key == KeyCode::UP)     titleCursorNum--;
+            else if (key == KeyCode::DOWN)   titleCursorNum++;
+            else if (key == KeyCode::RIGHT && titleCursorNum == TitleCursor::CHANGE_STONE)   stoneNum++;
+            else if (key == KeyCode::LEFT && titleCursorNum == TitleCursor::CHANGE_STONE)    stoneNum--;
+
+            if (titleCursorNum >= TitleCursor::CURSOR_MAX_NUM)   titleCursorNum = TitleCursor::CURSOR_MAX_NUM - 1;
+            if (titleCursorNum < 0)                              titleCursorNum = 0;
+            if (stoneNum > STONE_NUM_MAX)   stoneNum = STONE_NUM_MAX;
+            if (stoneNum < STONE_NUM_MIN)   stoneNum = STONE_NUM_MIN;
+
             break;
+        }
         case GameState::Rule:
             drawRule();
-            if (getKeyCode() == KeyCode::ENTER)   mancala.gameState = GameState::Game_Input;
+            if (getKeyCode() == KeyCode::ENTER)   mancala.gameState = GameState::Title;
             break;
         case GameState::Game_Input:
             drawGame(mancala);
@@ -91,7 +128,7 @@ void clearText()
     system("cls");
 }
 
-void drawTitle()
+void drawTitle(int stoneNum, int cursorNum)
 {
     clearText();
 
@@ -104,7 +141,9 @@ void drawTitle()
     std::cout << "　　　■　■　■　　■■■■　■　■　　■■■　　■■■■　■　　■■■■" << std::endl;
     std::cout << std::endl;
     std::cout << std::endl;
-    std::cout << "　　　　　　　　　　　　　　　　PRESS ENTER KEY" << std::endl;
+    std::cout << "　　　　　　　　　　　　　　" << getTitleCursorText(TitleCursor::GAME_START, cursorNum) <<"ゲームスタート" << std::endl;
+    std::cout << "　　　　　　　　　　　　　　" << getTitleCursorText(TitleCursor::RULE, cursorNum) << "　　ルール" << std::endl;
+    std::cout << "　　　　　　　　　　　　　　" << getTitleCursorText(TitleCursor::CHANGE_STONE, cursorNum) << " 石の数 " << "< " << stoneNum << " >" << std::endl;
 }
 
 void drawRule()
@@ -140,7 +179,7 @@ void drawRule()
     std::cout << std::endl;
     std::cout << std::endl;
 
-    std::cout << "　　　　　　　　　　　　　　PRESS ENTER KEY　⇒　Game Start!!" << std::endl;
+    std::cout << "　　　　　　　　　　　　　　PRESS ENTER KEY　⇒　タイトルへ戻る" << std::endl;
 }
 
 void drawGame(Mancala mancala)
@@ -153,13 +192,13 @@ void drawGame(Mancala mancala)
     std::cout << mancala.GetGameText() << std::endl;
 
     std::cout << std::endl;
-    std::cout << "  右側：" << mancala.GetGool(PlayerID::Right).GetStoneNum();
+    std::cout << "   右側：" << mancala.GetGool(PlayerID::Right).GetStoneNum();
     std::cout << mancala.GetGoalText(PlayerID::Right) << std::endl;
     std::cout << std::endl;
 
     for (int i = 0; i < 6; i++)
     {
-        std::cout << mancala.GetCursorText(PlayerID::Left, i) << "|";
+        std::cout << "    " << mancala.GetCursorText(PlayerID::Left, i) << "|";
         drawStoneNum(leftPockets[i]);
         std::cout << "| |";
         drawStoneNum(rightPockets[i]);
@@ -169,7 +208,7 @@ void drawGame(Mancala mancala)
     }
 
     std::cout << std::endl;
-    std::cout << "  左側：" << mancala.GetGool(PlayerID::Left).GetStoneNum();
+    std::cout << "   左側：" << mancala.GetGool(PlayerID::Left).GetStoneNum();
     std::cout << mancala.GetGoalText(PlayerID::Left) << std::endl;
 }
 
@@ -255,6 +294,19 @@ void drawStoneNum(Pocket pocket)
     std::cout << pocket.GetStoneNum();
 }
 
+std::string getTitleCursorText(TitleCursor titleCursor, int nowCursor)
+{
+    if (titleCursor == nowCursor)
+    {
+        return "〇";
+    }
+    else
+    {
+        return "　";
+    }
+}
+
+
 KeyCode getKeyCode()
 {
     int key = 0;
@@ -268,6 +320,8 @@ KeyCode getKeyCode()
     if (key == 13)   return KeyCode::ENTER;
     if (key == 72)   return KeyCode::UP;
     if (key == 80)   return KeyCode::DOWN;
+    if (key == 77)   return KeyCode::RIGHT;
+    if (key == 75)   return KeyCode::LEFT;
     return KeyCode::NONE;
 }
 
