@@ -16,9 +16,9 @@ int Mancala::GetCursorPos(PlayerID id, int index)
 	return pos;
 }
 
-int Mancala::GetNextPos()
+int Mancala::GetNextPos( int pos )
 {
-	switch (handCursor)
+	switch (pos)
 	{
 	case 0: return 12;
 	case 1: return 2;
@@ -38,9 +38,16 @@ int Mancala::GetNextPos()
 	return 0;
 }
 
+int Mancala::GetPos(PlayerID id, int index)
+{
+	int pos = 1;
+	if (id == PlayerID::Right) pos += 6;
+	return pos + index;
+}
+
 void Mancala::MoveUpdate()
 {
-	handCursor = GetNextPos();
+	handCursor = GetNextPos( handCursor );
 	pockets[handCursor].AddStoneNum(1);
 	handNum--;
 
@@ -201,17 +208,14 @@ const Pocket& Mancala::GetPocket(int pocketID)
 
 Mancala::Mancala()
 {
-	gameState = GameState::Game_Input;
+	gameState = GameState::Title;
 	cursor = 0;
 	turnPlayer = PlayerID::Left;
 	result = Result::None;
-
 	for (int i = 0; i < 14; ++i)
 	{
 		pockets.push_back(Pocket(4));
 	}
-	pockets[0].ResetStone();
-	pockets[13].ResetStone();
 	handCursor = 0;
 	handNum = 0;
 }
@@ -219,6 +223,24 @@ Mancala::Mancala()
 Mancala::~Mancala()
 {
 	pockets.clear();
+}
+
+//ゲームの初期化
+void Mancala::Init(int stoneNum)
+{
+	cursor = 0;
+	turnPlayer = PlayerID::Left;
+	result = Result::None;
+
+	for (int i = 0; i < 14; ++i)
+	{
+		pockets[i].ResetStone();
+		pockets[i].AddStoneNum(stoneNum);
+	}
+	pockets[0].ResetStone();
+	pockets[13].ResetStone();
+	handCursor = 0;
+	handNum = 0;
 }
 
 bool Mancala::CanSteal()
@@ -268,6 +290,17 @@ bool Mancala::IsSteel()
 
 	//横取り先に石があるかつ、最後のポケットが空だったら(石を落としたので１つになっている)
 	return (pockets[pos].GetStoneNum() > 0 && pockets[handCursor].GetStoneNum() == 1);
+}
+
+int Mancala::GetEndPos()
+{
+	int pos = GetCursorPos();
+	int num = pockets[pos].GetStoneNum();
+	for (int i = 0; i < num; ++i)
+	{
+		pos = GetNextPos( pos );
+	}
+	return pos;
 }
 
 void Mancala::Update()
@@ -321,13 +354,25 @@ void Mancala::OnEnterKey()
 //カーソルの描画を取得する
 std::string Mancala::GetCursorText(PlayerID id, int index)
 {
-	auto str = ">";
+	std::string end = " ";
+	std::string str = ">";
 	if (id == PlayerID::Right) str = "<";
 
 	if (gameState == GameState::Game_Input )
 	{
+
 		if (cursor != index) str = " ";
 		if (turnPlayer != id) str = " ";
+
+		if (GetEndPos() == GetPos(id, index))
+		{
+			end = "o";
+		}
+		else
+		{
+			end = " ";
+		}
+
 	}
 	else
 	{
@@ -337,6 +382,10 @@ std::string Mancala::GetCursorText(PlayerID id, int index)
 			str = " ";
 		}
 	}
+
+	if (id == PlayerID::Left) str = str + end;
+	else str = end + str;
+
 	return str;
 }
 
@@ -353,6 +402,11 @@ std::string Mancala::GetGoalText(PlayerID id)
 		{
 			str = "<";
 		}
+	}
+	else
+	{
+		if (GetEndPos() == 0 && id == PlayerID::Left) str = " o";
+		if (GetEndPos() == 13 && id == PlayerID::Right) str = " o";
 	}
 	return str;
 }

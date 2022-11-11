@@ -74,7 +74,8 @@ private:
 
 	int GetCursorPos();	//カーソルの位置を取得する
 	int GetCursorPos(PlayerID id, int index);	//引数からカーソルの位置を取得する
-	int GetNextPos();	//次に石を落とす場所を取得する
+	int GetNextPos( int pos );	//次に石を落とす場所を取得する
+	int GetPos(PlayerID id, int index);	//引数からポケットの位置を取得する
 
 	void MoveUpdate();
 	void JustUpdate();
@@ -97,6 +98,9 @@ private:
 	//横取りしたか判定する
 	bool IsSteel();
 
+	//最後に石を落とす位置を取得する
+	int GetEndPos();
+
 public:
 	GameState gameState;	//ゲームの状態
 	int cursor;	//カーソル位置
@@ -117,6 +121,9 @@ public:
 
 	//デストラクタ
 	~Mancala();
+
+	//ゲームの初期化
+	void Init(int stoneNum);
 
 	//ボードの変化を反映させる
 	void Update();
